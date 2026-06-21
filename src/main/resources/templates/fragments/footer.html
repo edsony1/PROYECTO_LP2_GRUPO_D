@@ -1,0 +1,11 @@
+<footer th:fragment="footer" class="bg-dark text-white-50 mt-5 py-5" xmlns:th="http://www.thymeleaf.org">
+	<div class="container text-center">
+		<p class="mb-2 fs-4">
+			<i class="fa-solid fa-store"></i> <strong class="text-white">EVESTIS</strong>
+		</p>
+		<p class="mb-0 fs-6">
+			&copy; <span th:text="${#calendars.format(#calendars.createNow(), 'yyyy')}">2026</span>
+			Tienda Ropa. Todos los derechos reservados.
+		</p>
+	</div>
+</footer>

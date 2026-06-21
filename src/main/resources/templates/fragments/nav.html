@@ -1,0 +1,47 @@
+<div th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
+
+	<nav class="tienda-nav navbar navbar-expand-lg">
+		<div class="container py-2">
+
+			<a class="navbar-brand" th:href="@{/inicio}">
+				<span class="navbar-brand-icon"><i class="fa-solid fa-shirt"></i></span>
+				EVESTIS
+			</a>
+
+			<div class="d-flex align-items-center ms-auto gap-2">
+
+				<a th:if="${session.idUsuario == null}"
+				   th:href="@{/login}"
+				   class="btn btn-acento btn-sm">
+					<i class="fas fa-sign-in-alt"></i> Iniciar sesión
+				</a>
+
+				<div th:if="${session.idUsuario != null}" class="d-flex align-items-center gap-2">
+
+					<a th:if="${session.idRol == 1}" th:href="@{/dashboard}" class="btn btn-nav-link btn-sm">
+						<i class="fas fa-gauge"></i> Dashboard
+					</a>
+
+					<a th:if="${session.idRol == 1}" th:href="@{/producto}" class="btn btn-nav-link btn-sm">
+						<i class="fas fa-tags"></i> Productos
+					</a>
+
+					<span class="nav-divider"></span>
+
+					<span class="nav-user">
+						<i class="fas fa-circle-user"></i>
+						<h1 class="h5 m-0">Bienvenido, <span th:text="${session.fullName}"></span></h1>
+					</span>
+
+					<a th:href="@{/login/cerrar-sesion}" class="btn btn-nav-link btn-sm">
+						<i class="fas fa-sign-out-alt"></i>
+					</a>
+
+				</div>
+
+			</div>
+
+		</div>
+	</nav>
+
+</div>
