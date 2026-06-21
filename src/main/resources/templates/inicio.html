@@ -38,7 +38,7 @@
 			<div class="col-md-3" th:each="producto : ${productos}">
 				<div class="card h-100 shadow-sm">
 					<img th:if="${producto.imagen}" th:src="@{'/img/' + ${producto.imagen}}"
-						class="card-img-top" alt="Ponganle imagen p"
+						class="d-block mx-auto"
 						style="height: 220px; object-fit: cover;">
 					<div class="card-body d-flex flex-column">
 						<span class="badge bg-secondary mb-2" th:text="${producto.categoria.descripcion}"></span>
