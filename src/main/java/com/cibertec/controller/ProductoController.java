@@ -46,14 +46,24 @@ public class ProductoController {
     }
 
     @GetMapping
-    public String listar(Model model, HttpSession session) {
+    public String listar(
+            @RequestParam(required = false, defaultValue = "") String nombre,
+            Model model,
+            HttpSession session) {
 
         String redirect = validarAcceso(session);
         if (redirect != null) {
             return redirect;
         }
 
-        model.addAttribute("productos", productoService.getAll());
+        if (nombre.isBlank()) {
+            model.addAttribute("productos", productoService.getAll());
+        } else {
+            model.addAttribute("productos",
+                    productoService.buscarPorNombre(nombre));
+        }
+
+        model.addAttribute("nombre", nombre);
 
         return "producto-lista";
     }

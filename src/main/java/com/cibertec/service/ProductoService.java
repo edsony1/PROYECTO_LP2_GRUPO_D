@@ -13,7 +13,10 @@ public class ProductoService {
     private final ProductoRepository productoRepository;
 
     public List<Producto> getAll() {
-        return productoRepository.findAll();
+        return productoRepository.findAllByOrderByIdProdDesc();
+    }
+    public List<Producto> buscarPorNombre(String nombre) {
+        return productoRepository.findByNombreContaining(nombre);
     }
 
     public List<Producto> getByCategoria(Integer idCategoria) {
