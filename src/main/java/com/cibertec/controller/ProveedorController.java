@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cibertec.model.Proveedor;
+import com.cibertec.model.Rol;
 import com.cibertec.service.ProveedorService;
 import com.cibertec.util.Alert;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -22,14 +24,28 @@ public class ProveedorController {
 
     private final ProveedorService proveedorService;
 
+    private String validarAdmin(HttpSession session) {
+        Integer idUsuario = (Integer) session.getAttribute("idUsuario");
+        Integer idRol     = (Integer) session.getAttribute("idRol");
+        if (idUsuario == null)           return "redirect:/login";
+        if (!Rol.ID_ADMIN.equals(idRol)) return "redirect:/inicio";
+        return null;
+    }
+
     @GetMapping("listado")
-    public String listado(Model model) {
+    public String listado(Model model, HttpSession session) {
+        String redirect = validarAdmin(session);
+        if (redirect != null) return redirect;
+
         model.addAttribute("lstProveedores", proveedorService.getAll());
         return "proveedor/proveedor-lista";
     }
 
     @GetMapping("nuevo")
-    public String nuevo(Model model) {
+    public String nuevo(Model model, HttpSession session) {
+        String redirect = validarAdmin(session);
+        if (redirect != null) return redirect;
+
         model.addAttribute("proveedor", new Proveedor());
         return "proveedor/proveedor-nuevo";
     }
@@ -37,7 +53,11 @@ public class ProveedorController {
     @PostMapping("registrar")
     public String registrar(@ModelAttribute Proveedor proveedor,
                             Model model,
+                            HttpSession session,
                             RedirectAttributes flash) {
+
+        String redirect = validarAdmin(session);
+        if (redirect != null) return redirect;
 
         var response = proveedorService.create(proveedor);
 
@@ -52,7 +72,10 @@ public class ProveedorController {
     }
 
     @GetMapping("edicion/{id}")
-    public String edicion(@PathVariable Integer id, Model model) {
+    public String edicion(@PathVariable Integer id, Model model, HttpSession session) {
+        String redirect = validarAdmin(session);
+        if (redirect != null) return redirect;
+
         model.addAttribute("proveedor", proveedorService.getOne(id));
         return "proveedor/proveedor-editar";
     }
@@ -60,7 +83,11 @@ public class ProveedorController {
     @PostMapping("guardar")
     public String guardar(@ModelAttribute Proveedor proveedor,
                           Model model,
+                          HttpSession session,
                           RedirectAttributes flash) {
+
+        String redirect = validarAdmin(session);
+        if (redirect != null) return redirect;
 
         var response = proveedorService.update(proveedor);
 
@@ -75,7 +102,10 @@ public class ProveedorController {
     }
 
     @PostMapping("cambiar-estado/{id}")
-    public String cambiarEstado(@PathVariable Integer id, RedirectAttributes flash) {
+    public String cambiarEstado(@PathVariable Integer id, HttpSession session, RedirectAttributes flash) {
+        String redirect = validarAdmin(session);
+        if (redirect != null) return redirect;
+
         var response = proveedorService.changeActive(id);
 
         flash.addFlashAttribute("toast", Alert.sweetToast(response.mensaje(), "success", 5000));

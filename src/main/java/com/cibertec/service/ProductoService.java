@@ -36,6 +36,11 @@ public class ProductoService {
     }
 
     public ResultadoResponse create(Producto producto) {
+
+        var duplicado = productoRepository.findByDescripcionAndIdProdNot(producto.getDescripcion(), "");
+        if (duplicado.isPresent()) {
+            return new ResultadoResponse(false, "Ya existe un producto con esa descripción");
+        }
         try {
             producto.setIdProd(generarId());
             var registro = productoRepository.save(producto);
@@ -52,6 +57,11 @@ public class ProductoService {
     }
 
     public ResultadoResponse update(Producto producto) {
+
+        var duplicado = productoRepository.findByDescripcionAndIdProdNot(producto.getDescripcion(), producto.getIdProd());
+        if (duplicado.isPresent()) {
+            return new ResultadoResponse(false, "Ya existe otro producto con esa descripción");
+        }
         try {
             var registro = productoRepository.save(producto);
             var mensaje = String.format("Producto con Id %s actualizado", registro.getIdProd());

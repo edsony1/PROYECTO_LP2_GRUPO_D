@@ -20,7 +20,6 @@ public class AutenticacionService {
     private final RolRepository rolRepository;
 
     public Usuario authenticate(AutenticacionFilter filter) {
-
         return usuarioRepository.findByCorreoAndPassword(
                 filter.getCorreo(),
                 filter.getPassword()
@@ -28,6 +27,21 @@ public class AutenticacionService {
     }
 
     public ResultadoResponse registrar(RegistroFilter filter) {
+
+        if (filter.getCorreo() == null || !filter.getCorreo().matches("^[\\w.+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$")) {
+            return new ResultadoResponse(false, "El formato del correo no es válido");
+        }
+
+        if (filter.getPassword() == null || filter.getPassword().length() < 6) {
+            return new ResultadoResponse(false, "La contraseña debe tener al menos 6 caracteres");
+        }
+
+        if (filter.getNombres() == null || filter.getNombres().isBlank()) {
+            return new ResultadoResponse(false, "El nombre es obligatorio");
+        }
+        if (filter.getApellidos() == null || filter.getApellidos().isBlank()) {
+            return new ResultadoResponse(false, "Los apellidos son obligatorios");
+        }
 
         if (usuarioRepository.existsByCorreo(filter.getCorreo())) {
             return new ResultadoResponse(false, "Ese correo ya está registrado");
@@ -51,6 +65,4 @@ public class AutenticacionService {
             return new ResultadoResponse(false, "Error al crear la cuenta");
         }
     }
-
 }
-

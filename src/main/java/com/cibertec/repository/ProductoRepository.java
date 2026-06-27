@@ -12,6 +12,9 @@ public interface ProductoRepository extends JpaRepository<Producto, String> {
 
     List<Producto> findAllByOrderByIdProdDesc();
 
+    @Query(value = "SELECT * FROM tb_productos WHERE descripcion = :descripcion AND id_prod != :idProd LIMIT 1", nativeQuery = true)
+    java.util.Optional<Producto> findByDescripcionAndIdProdNot(@Param("descripcion") String descripcion, @Param("idProd") String idProd);
+
     @Query("SELECT p.idProd FROM Producto p ORDER BY p.idProd DESC LIMIT 1")
     String findLastId();
 

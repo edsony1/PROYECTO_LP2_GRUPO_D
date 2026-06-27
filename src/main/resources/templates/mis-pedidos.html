@@ -4,66 +4,287 @@
 	<meta charset="UTF-8">
 	<title>Tienda Ropa - Mis pedidos</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 	<link rel="stylesheet" th:href="@{/login.css}">
+	<link rel="stylesheet" th:href="@{/admin.css}">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<style>
+		/* ── Tarjeta de pedido ── */
+		.pedido-card {
+			background: #fff;
+			border-radius: 16px;
+			box-shadow: 0 4px 24px rgba(43,38,34,0.08);
+			border: 1px solid rgba(43,38,34,0.07);
+			margin-bottom: 20px;
+			overflow: hidden;
+		}
+
+		/* Cabecera del pedido */
+		.pedido-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 18px 24px;
+			background: linear-gradient(135deg, #2b2622 0%, #3d3028 100%);
+			gap: 12px;
+		}
+		.pedido-header-left {
+			display: flex;
+			align-items: center;
+			gap: 14px;
+		}
+		.pedido-icon {
+			width: 42px;
+			height: 42px;
+			background: rgba(200,85,45,0.2);
+			border: 1.5px solid #c8552d;
+			border-radius: 10px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #c8552d;
+			font-size: 1rem;
+			flex-shrink: 0;
+		}
+		.pedido-numero {
+			font-weight: 700;
+			font-size: 1rem;
+			color: #f7f3ec;
+			margin: 0;
+		}
+		.pedido-fecha {
+			font-size: 0.8rem;
+			color: #a89a8e;
+			margin: 2px 0 0;
+		}
+		.pedido-total-badge {
+			background: rgba(200,85,45,0.15);
+			border: 1.5px solid rgba(200,85,45,0.4);
+			color: #f0a080;
+			border-radius: 20px;
+			padding: 5px 14px;
+			font-size: 0.85rem;
+			font-weight: 700;
+			white-space: nowrap;
+		}
+
+		/* Cuerpo — tabla de detalles */
+		.pedido-body { padding: 0; }
+
+		.detalle-row {
+			display: flex;
+			align-items: center;
+			gap: 14px;
+			padding: 14px 24px;
+			border-bottom: 1px solid #f0ebe4;
+		}
+		.detalle-row:last-child { border-bottom: none; }
+		.detalle-row:hover { background: #faf8f5; }
+
+		.detalle-img {
+			width: 52px;
+			height: 52px;
+			object-fit: cover;
+			border-radius: 10px;
+			border: 1.5px solid #e7e0d4;
+			flex-shrink: 0;
+		}
+		.detalle-img-placeholder {
+			width: 52px;
+			height: 52px;
+			border-radius: 10px;
+			background: #f0ebe4;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #c8b8a8;
+			font-size: 1.2rem;
+			flex-shrink: 0;
+		}
+
+		.detalle-nombre {
+			flex: 1;
+			font-weight: 600;
+			color: #2b2622;
+			font-size: 0.92rem;
+		}
+		.detalle-qty {
+			font-size: 0.82rem;
+			color: #9a8f85;
+			margin-top: 2px;
+		}
+
+		.detalle-precio {
+			font-size: 0.85rem;
+			color: #9a8f85;
+			min-width: 80px;
+			text-align: right;
+		}
+		.detalle-subtotal {
+			font-weight: 700;
+			color: #2b2622;
+			min-width: 90px;
+			text-align: right;
+			font-size: 0.95rem;
+		}
+
+		/* Footer del pedido */
+		.pedido-footer {
+			padding: 14px 24px;
+			background: #faf8f5;
+			border-top: 1px solid #f0ebe4;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+		.pedido-items-count {
+			font-size: 0.8rem;
+			color: #9a8f85;
+		}
+
+		/* Estado "Entregado" */
+		.estado-badge {
+			display: inline-flex;
+			align-items: center;
+			gap: 5px;
+			background: #eaf7f0;
+			border: 1px solid #a3d9b8;
+			color: #2e7d52;
+			border-radius: 20px;
+			padding: 4px 12px;
+			font-size: 0.78rem;
+			font-weight: 600;
+		}
+
+		/* Empty state */
+		.empty-pedidos {
+			text-align: center;
+			padding: 70px 24px;
+		}
+		.empty-pedidos-icon {
+			width: 90px;
+			height: 90px;
+			background: #f0ebe4;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 2.2rem;
+			color: #c8b8a8;
+			margin: 0 auto 20px;
+		}
+	</style>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
 	<div th:replace="~{fragments/nav :: nav}"></div>
 
-	<div class="container mt-4 flex-grow-1">
+	<div class="container mt-4 mb-5 flex-grow-1">
 
-		<h2 class="mb-4">
-			<i class="fa-solid fa-receipt"></i> Mis pedidos
-		</h2>
-
-		<p th:if="${#lists.isEmpty(pedidos)}" class="text-muted">
-			Todavía no has realizado ningún pedido.
-		</p>
-
-		<div th:each="pedido : ${pedidos}" class="card shadow-sm mb-3">
-			<div class="card-body">
-
-				<div class="d-flex justify-content-between align-items-center mb-3">
-					<div>
-						<h5 class="mb-0">Pedido Nro. <span th:text="${pedido.idPedido}"></span></h5>
-						<small class="text-muted" th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy')}"></small>
-					</div>
-					<!-- Comprobante en PDF: pendiente, por ahora el botón no hace nada -->
-					<button type="button" class="btn btn-outline-dark btn-sm" disabled title="Próximamente">
-						<i class="fa-solid fa-file-pdf"></i> Ver comprobante
-					</button>
+		<!-- Header -->
+		<div class="page-header mb-4">
+			<div class="page-header-left">
+				<div class="header-icon">
+					<i class="fas fa-receipt"></i>
 				</div>
-
-				<div class="table-responsive">
-					<table class="table table-sm mb-0">
-						<thead class="table-light">
-							<tr>
-								<th>Producto</th>
-								<th>Cantidad</th>
-								<th>Precio</th>
-								<th>Subtotal</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="detalle : ${pedido.detalles}">
-								<td th:text="${detalle.producto.nombre}"></td>
-								<td th:text="${detalle.cantidad}"></td>
-								<td th:text="'S/ ' + ${#numbers.formatDecimal(detalle.precio, 1, 2)}"></td>
-								<td th:text="'S/ ' + ${#numbers.formatDecimal(detalle.precio * detalle.cantidad, 1, 2)}"></td>
-							</tr>
-						</tbody>
-					</table>
+				<div>
+					<h2>Mis pedidos</h2>
+					<p>Historial de tus compras realizadas</p>
 				</div>
-
 			</div>
+		</div>
+
+		<!-- Sin pedidos -->
+		<div th:if="${#lists.isEmpty(pedidos)}" class="pedido-card">
+			<div class="empty-pedidos">
+				<div class="empty-pedidos-icon">
+					<i class="fas fa-box-open"></i>
+				</div>
+				<h5 style="color:#2b2622; font-weight:600;">Aún no tienes pedidos</h5>
+				<p class="text-muted mb-4" style="font-size:0.9rem;">Cuando realices una compra, aparecerá aquí.</p>
+				<a th:href="@{/inicio}" class="btn-nuevo">
+					<i class="fas fa-shirt"></i> Ir a la tienda
+				</a>
+			</div>
+		</div>
+
+		<!-- Lista de pedidos -->
+		<div th:each="pedido : ${pedidos}" class="pedido-card">
+
+			<!-- Cabecera -->
+			<div class="pedido-header">
+				<div class="pedido-header-left">
+					<div class="pedido-icon">
+						<i class="fas fa-bag-shopping"></i>
+					</div>
+					<div>
+						<p class="pedido-numero">Pedido #<span th:text="${pedido.idPedido}"></span></p>
+						<p class="pedido-fecha">
+							<i class="fas fa-calendar me-1"></i>
+							<span th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy')}"></span>
+						</p>
+					</div>
+				</div>
+				<div class="d-flex align-items-center gap-3">
+					<span class="estado-badge">
+						<i class="fas fa-circle-check"></i> Completado
+					</span>
+					<span class="pedido-total-badge">
+						S/ <span th:text="${#numbers.formatDecimal(
+							#aggregates.sum(pedido.detalles.![precio * cantidad]), 1, 2
+						)}"></span>
+					</span>
+				</div>
+			</div>
+
+			<!-- Detalles -->
+			<div class="pedido-body">
+				<div th:each="detalle : ${pedido.detalles}" class="detalle-row">
+
+					<!-- Imagen -->
+					<img th:if="${detalle.producto.imagen}"
+						 th:src="@{'/img/' + ${detalle.producto.imagen}}"
+						 class="detalle-img"
+						 th:alt="${detalle.producto.nombre}">
+					<div th:unless="${detalle.producto.imagen}" class="detalle-img-placeholder">
+						<i class="fas fa-shirt"></i>
+					</div>
+
+					<!-- Nombre + cantidad -->
+					<div class="detalle-nombre">
+						<div th:text="${detalle.producto.nombre}"></div>
+						<div class="detalle-qty">
+							<i class="fas fa-times" style="font-size:0.7rem;"></i>
+							<span th:text="${detalle.cantidad}"></span> unid.
+						</div>
+					</div>
+
+					<!-- Precio unitario -->
+					<div class="detalle-precio"
+						 th:text="'S/ ' + ${#numbers.formatDecimal(detalle.precio, 1, 2)} + ' c/u'"></div>
+
+					<!-- Subtotal -->
+					<div class="detalle-subtotal"
+						 th:text="'S/ ' + ${#numbers.formatDecimal(detalle.precio * detalle.cantidad, 1, 2)}"></div>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			<div class="pedido-footer">
+				<span class="pedido-items-count">
+					<i class="fas fa-box me-1"></i>
+					<span th:text="${pedido.detalles.size()}"></span> producto(s)
+				</span>
+				<button type="button" class="btn-cancelar" disabled style="opacity:0.5; cursor:not-allowed;">
+					<i class="fas fa-file-pdf"></i> Comprobante
+				</button>
+			</div>
+
 		</div>
 
 	</div>
 
 	<div th:replace="~{fragments/footer :: footer}"></div>
-
 	<th:block th:utext="${alert}"></th:block>
 
 </body>

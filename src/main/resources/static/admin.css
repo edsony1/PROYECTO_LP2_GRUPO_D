@@ -375,3 +375,50 @@ textarea.form-control {
     opacity: 0.4;
     display: block;
 }
+
+/* ── Stat Cards (Dashboard) ── */
+.stat-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07);
+    border: 1px solid rgba(43,38,34,.07);
+}
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+.stat-icon.blue   { background: #e8f0fe; color: #4169e1; }
+.stat-icon.green  { background: #e6f4ea; color: #2e7d32; }
+.stat-icon.orange { background: #fff3e0; color: #e65100; }
+.stat-icon.purple { background: #f3e8fd; color: #7b2fff; }
+.stat-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #8c8077;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2b2622;
+    line-height: 1.1;
+}
+
+/* ── Module Cards (Dashboard) ── */
+.module-card {
+    border: 1px solid rgba(43,38,34,.08);
+    border-radius: 14px;
+    transition: box-shadow .2s ease;
+}
+.module-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.13); }

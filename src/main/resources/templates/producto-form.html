@@ -118,11 +118,11 @@
 					<div class="section-label"><i class="fas fa-image"></i> Imagen</div>
 
 					<div class="mb-0">
-						<label class="form-label">Nombre de archivo</label>
+						<label class="form-label">Nombre de archivo <span class="text-danger">*</span></label>
 						<div class="input-icon-wrap">
 							<i class="input-icon fas fa-file-image"></i>
 							<input type="text" class="form-control" th:field="*{imagen}"
-								   placeholder="Ej: polo_negro.jpg">
+								   placeholder="Ej: polo_negro.jpg" required>
 						</div>
 						<div class="form-text text-muted" style="font-size:0.78rem;">
 							El archivo debe estar en <code>static/img/</code>

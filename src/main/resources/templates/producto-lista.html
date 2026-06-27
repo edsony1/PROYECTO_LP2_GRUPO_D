@@ -35,10 +35,10 @@
 		<form th:action="@{/producto}" method="get" class="row mb-3 g-2 align-items-center">
 			<div class="col-md-4">
 				<input type="text"
-					   name="nombre"
-					   class="form-control"
-					   placeholder="Buscar producto..."
-					   th:value="${nombre}">
+				       name="nombre"
+				       class="form-control"
+				       placeholder="Buscar producto..."
+				       th:value="${nombre}">
 			</div>
 			<div class="col-auto">
 				<button type="submit" class="btn-nuevo">
@@ -54,7 +54,9 @@
 					<tr>
 						<th>Código</th>
 						<th>Nombre</th>
+						<th>Descripción</th>
 						<th>Categoría</th>
+						<th>Proveedor</th>
 						<th>Precio</th>
 						<th>Stock</th>
 						<th>Estado</th>
@@ -74,7 +76,11 @@
 								<span th:text="${producto.nombre}"></span>
 							</div>
 						</td>
+						<td>
+							<span class="text-muted small" th:text="${producto.descripcion}"></span>
+						</td>
 						<td th:text="${producto.categoria.descripcion}"></td>
+						<td th:text="${producto.proveedor.razonSocial}"></td>
 						<td th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}"></td>
 						<td th:text="${producto.stock}"></td>
 						<td>

@@ -2,6 +2,7 @@ package com.cibertec.model;
 
 import java.io.Serializable;
 import jakarta.persistence.Embeddable;
+
 import lombok.Getter;
 import lombok.Setter;
 

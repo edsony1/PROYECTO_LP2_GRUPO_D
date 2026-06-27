@@ -1,11 +1,50 @@
-<footer th:fragment="footer" class="bg-dark text-white-50 mt-5 py-5" xmlns:th="http://www.thymeleaf.org">
-	<div class="container text-center">
-		<p class="mb-2 fs-4">
-			<i class="fa-solid fa-store"></i> <strong class="text-white">EVESTIS</strong>
-		</p>
-		<p class="mb-0 fs-6">
-			&copy; <span th:text="${#calendars.format(#calendars.createNow(), 'yyyy')}">2026</span>
-			Tienda Ropa. Todos los derechos reservados.
-		</p>
+<footer th:fragment="footer" class="evestis-footer" xmlns:th="http://www.thymeleaf.org">
+	<div class="container">
+
+		<div class="evestis-footer-grid">
+
+			<div class="evestis-footer-brand">
+				<a th:href="@{/inicio}" class="evestis-footer-logo">
+					<span class="evestis-footer-logo-icon"><i class="fa-solid fa-shirt"></i></span>
+					EVESTIS
+				</a>
+				<p>Ropa pensada para tu día a día: calidad, estilo y buen precio en un solo lugar.</p>
+			</div>
+
+			<div class="evestis-footer-col" th:if="${session.idRol == null or session.idRol != 1}">
+				<h6>Tienda</h6>
+				<a th:href="@{/inicio}"><i class="fa-solid fa-store"></i> Catálogo</a>
+				<a th:href="@{/carrito}"><i class="fa-solid fa-cart-shopping"></i> Mi carrito</a>
+				<a th:href="@{/mis-pedidos}"><i class="fa-solid fa-receipt"></i> Mis pedidos</a>
+			</div>
+
+			<div class="evestis-footer-col">
+							<h6>Ayuda</h6>
+							<a href="#"><i class="fa-solid fa-circle-question"></i> Preguntas frecuentes</a>
+							<a href="#"><i class="fa-solid fa-truck-fast"></i> Envíos y entregas</a>
+							<a href="#"><i class="fa-solid fa-rotate-left"></i> Cambios y devoluciones</a>
+						</div>
+
+			<div class="evestis-footer-col">
+				<h6>Contáctanos</h6>
+				<a href="mailto:contacto@evestis.com"><i class="fa-solid fa-envelope"></i> correo@nofunka.com</a>
+				<a href="tel:+51999999999"><i class="fa-solid fa-phone"></i> +51 123 456 789</a>
+				<div class="evestis-footer-social">
+					<a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+					<a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+					<a href="#" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="evestis-footer-bottom">
+			<span>
+				&copy; <span th:text="${#calendars.format(#calendars.createNow(), 'yyyy')}">2026</span>
+				EVESTIS. Todos los derechos reservados.
+			</span>
+
+		</div>
+
 	</div>
 </footer>

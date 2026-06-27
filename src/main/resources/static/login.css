@@ -1,42 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
-/* ========== FONDO DE TIENDA (solo páginas internas) ========== */
+
+/* ========== FONDO CON IMAGEN (páginas internas) ========== */
 .fondo-tienda {
-    background-image: url('/img/img_fondo.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    position: relative;
+	background-image: url('/img/img_fondo.png');
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	min-height: 100vh;
+	position: relative;
 }
 
 .fondo-tienda::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(43, 38, 34, 0.35); /* Antes 0.65, ahora 0.35 = menos opaco */
-    z-index: -1;
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(43, 38, 34, 0.35);
+	z-index: -1;
 }
 
+/* ========== GLOBAL ========== */
+body {
+	font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+/* ========== LOGIN / REGISTRO ========== */
 .auth-wrapper {
-    background: #f7f3ec;
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(200, 85, 45, 0.08) 0%, transparent 45%),
-        radial-gradient(circle at 85% 80%, rgba(217, 168, 87, 0.10) 0%, transparent 45%);
-    padding: 56px 15px;
+	background: #f7f3ec;
+	background-image:
+		radial-gradient(circle at 15% 20%, rgba(200, 85, 45, 0.08) 0%, transparent 45%),
+		radial-gradient(circle at 85% 80%, rgba(217, 168, 87, 0.10) 0%, transparent 45%);
+	padding: 56px 15px;
 }
 
 .login-card {
-    background: #ffffff;
-    border-radius: 18px;
-    padding: 44px 40px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 20px 45px rgba(43, 38, 34, 0.12);
-    border: 1px solid rgba(43, 38, 34, 0.06);
+	background: #ffffff;
+	border-radius: 18px;
+	padding: 44px 40px;
+	width: 100%;
+	max-width: 400px;
+	box-shadow: 0 20px 45px rgba(43, 38, 34, 0.12);
+	border: 1px solid rgba(43, 38, 34, 0.06);
 }
 
 .login-icon {
@@ -68,7 +75,6 @@
 	margin-bottom: 30px;
 	font-size: 0.92rem;
 }
-
 
 .login-card .form-label {
 	font-size: 0.85rem;
@@ -125,6 +131,9 @@
 	text-decoration: underline;
 }
 
+/* ============================================
+   NAVBAR — Tienda Ropa EVESTIS
+   ============================================ */
 .tienda-nav {
 	background: #2b2622;
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
@@ -183,12 +192,14 @@
 	color: #f7f3ec;
 }
 
+/* Divisor vertical */
 .tienda-nav .nav-divider {
 	width: 1px;
 	height: 22px;
 	background: rgba(247, 243, 236, 0.2);
 }
 
+/* Nombre de usuario en navbar (admin) */
 .tienda-nav .nav-user {
 	color: #f7f3ec;
 	font-size: 0.9rem;
@@ -197,187 +208,469 @@
 	gap: 6px;
 	white-space: nowrap;
 }
-/* ========== BOTÓN HAMBURGUESA ========== */
+
+/* Badge del carrito */
+.nav-cart-badge {
+	position: absolute;
+	top: -6px;
+	right: -8px;
+	background: #c8552d;
+	color: #fff;
+	font-size: 0.66rem;
+	font-weight: 700;
+	min-width: 18px;
+	height: 18px;
+	padding: 0 4px;
+	border-radius: 999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 1.5px solid #2b2622;
+}
+
+/* ── Dropdown de usuario (cliente) ── */
+.nav-user-dropdown {
+	position: relative;
+}
+
+.nav-user-toggle {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 10px 6px 6px;
+	border-radius: 30px;
+	background: rgba(247, 243, 236, 0.06);
+	border: 1.5px solid rgba(247, 243, 236, 0.16);
+	color: #f7f3ec;
+	text-decoration: none;
+	transition: border-color 0.2s ease, background 0.2s ease;
+	cursor: pointer;
+}
+
+.nav-user-toggle:hover,
+.nav-user-toggle[aria-expanded="true"] {
+	border-color: #d9a857;
+	background: rgba(247, 243, 236, 0.1);
+	color: #f7f3ec;
+}
+
+.nav-user-avatar {
+	width: 28px;
+	height: 28px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: #c8552d;
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.8rem;
+	text-transform: uppercase;
+}
+
+.nav-user-name {
+	font-size: 0.88rem;
+	font-weight: 500;
+	white-space: nowrap;
+	max-width: 160px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.nav-user-caret {
+	font-size: 0.62rem;
+	color: #a89a8e;
+	transition: transform 0.2s ease;
+}
+
+.nav-user-toggle[aria-expanded="true"] .nav-user-caret {
+	transform: rotate(180deg);
+}
+
+.nav-user-menu {
+	background: #fff;
+	border: 1px solid rgba(43, 38, 34, 0.08);
+	border-radius: 12px;
+	box-shadow: 0 14px 32px rgba(43, 38, 34, 0.18);
+	padding: 8px;
+	min-width: 190px;
+	margin-top: 10px;
+}
+
+.nav-user-menu .dropdown-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border-radius: 8px;
+	padding: 9px 12px;
+	font-size: 0.88rem;
+	font-weight: 500;
+	color: #4a423b;
+	transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-user-menu .dropdown-item i {
+	width: 16px;
+	text-align: center;
+	color: #c8552d;
+}
+
+.nav-user-menu .dropdown-item:hover {
+	background: #f7f3ec;
+	color: #2b2622;
+}
+
+.nav-user-menu .dropdown-item-danger {
+	color: #b3331a;
+}
+
+.nav-user-menu .dropdown-item-danger i {
+	color: #b3331a;
+}
+
+.nav-user-menu .dropdown-item-danger:hover {
+	background: #fbeae6;
+	color: #b3331a;
+}
+
+.nav-user-menu .dropdown-divider {
+	margin: 6px 4px;
+	border-color: #f0ebe4;
+}
+
+@media (max-width: 991px) {
+	.nav-user-dropdown {
+		width: 100%;
+	}
+	.nav-user-toggle {
+		width: 100%;
+	}
+	.nav-user-name {
+		max-width: none;
+		flex: 1;
+	}
+	.nav-divider {
+		display: none;
+	}
+}
+
+/* ============================================
+   BOTÓN HAMBURGUESA
+   ============================================ */
 .btn-menu {
-    background: transparent;
-    border: 1.5px solid rgba(247, 243, 236, 0.25);
-    color: #f7f3ec;
-    font-size: 1.4rem;
-    width: 42px;
-    height: 42px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    padding: 0;
+	background: transparent;
+	border: 1.5px solid rgba(247, 243, 236, 0.25);
+	color: #f7f3ec;
+	font-size: 1.1rem;
+	width: 38px;
+	height: 38px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	flex-shrink: 0;
 }
 
 .btn-menu:hover {
-    background: rgba(247, 243, 236, 0.08);
-    border-color: #d9a857;
-    color: #d9a857;
+	background: rgba(247, 243, 236, 0.1);
+	border-color: #d9a857;
 }
 
-/* ========== OVERLAY (FONDO OSCURO) ========== */
+/* ============================================
+   SIDEBAR
+   ============================================ */
 .sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(43, 38, 34, 0.6);
-    z-index: 998;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
+	display: none;
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1040;
+	backdrop-filter: blur(2px);
 }
 
 .sidebar-overlay.active {
-    opacity: 1;
-    visibility: visible;
+	display: block;
 }
 
-/* ========== MENÚ LATERAL ========== */
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    height: 100vh;
-    background: #2b2622;
-    z-index: 999;
-    transform: translateX(-100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.4);
-    overflow-y: auto;
+	position: fixed;
+	top: 0;
+	left: -300px;
+	width: 280px;
+	height: 100vh;
+	background: #2b2622;
+	z-index: 1050;
+	overflow-y: auto;
+	transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
 }
 
 .sidebar.active {
-    transform: translateX(0);
+	left: 0;
 }
 
-/* Encabezado del menú */
 .sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 20px 15px;
-    border-bottom: 1px solid rgba(247, 243, 236, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 22px;
+	border-bottom: 1px solid rgba(247, 243, 236, 0.1);
 }
 
 .sidebar-header h5 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 700;
-    font-size: 1.3rem;
-    color: #f7f3ec;
-    margin: 0;
-    letter-spacing: 0.5px;
+	font-family: 'Playfair Display', Georgia, serif;
+	font-weight: 700;
+	font-size: 1.2rem;
+	color: #f7f3ec;
+	margin: 0;
 }
 
 .btn-close-menu {
-    background: transparent;
-    border: none;
-    color: #f7f3ec;
-    font-size: 1.3rem;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
+	background: rgba(247, 243, 236, 0.08);
+	border: none;
+	color: #f7f3ec;
+	font-size: 1.3rem;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
 }
 
 .btn-close-menu:hover {
-    background: #c8552d;
-    color: #fff;
+	background: #c8552d;
+	color: #fff;
 }
 
-/* Links del menú */
+/* Links del sidebar */
 .sidebar-link {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 22px;
-    color: #f7f3ec;
-    text-decoration: none;
-    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    font-size: 0.95rem;
-    font-weight: 500;
-    transition: all 0.25s ease;
-    border-left: 3px solid transparent;
-    margin: 2px 0;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 14px 22px;
+	color: #f7f3ec;
+	text-decoration: none;
+	font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+	font-size: 0.95rem;
+	font-weight: 500;
+	transition: all 0.25s ease;
+	border-left: 3px solid transparent;
+	margin: 2px 0;
 }
 
 .sidebar-link i {
-    font-size: 1.1rem;
-    width: 22px;
-    text-align: center;
-    color: #d9a857;
-    transition: all 0.25s ease;
+	font-size: 1.1rem;
+	width: 22px;
+	text-align: center;
+	color: #d9a857;
+	transition: all 0.25s ease;
 }
 
 .sidebar-link:hover {
-    background: rgba(200, 85, 45, 0.15);
-    border-left: 3px solid #c8552d;
-    color: #fff;
-    padding-left: 28px;
+	background: rgba(200, 85, 45, 0.15);
+	border-left: 3px solid #c8552d;
+	color: #fff;
+	padding-left: 28px;
 }
 
 .sidebar-link:hover i {
-    color: #c8552d;
-    transform: scale(1.15);
+	color: #c8552d;
+	transform: scale(1.15);
 }
 
-/* Link activo (página actual) */
 .sidebar-link.active {
-    background: rgba(200, 85, 45, 0.2);
-    border-left: 3px solid #c8552d;
-    color: #fff;
+	background: rgba(200, 85, 45, 0.2);
+	border-left: 3px solid #c8552d;
+	color: #fff;
 }
 
 .sidebar-link.active i {
-    color: #c8552d;
+	color: #c8552d;
 }
 
 /* Separador de secciones */
 .sidebar-section {
-    padding: 20px 22px 8px;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    color: #d9a857;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
+	padding: 20px 22px 8px;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	letter-spacing: 2.5px;
+	color: #d9a857;
+	font-weight: 600;
+	font-family: 'Inter', sans-serif;
 }
 
-/* ========== SCROLLBAR DEL MENÚ ========== */
+/* Scrollbar del sidebar */
 .sidebar::-webkit-scrollbar {
-    width: 4px;
+	width: 4px;
 }
 
 .sidebar::-webkit-scrollbar-track {
-    background: #1f1a17;
+	background: #1f1a17;
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background: #c8552d;
-    border-radius: 3px;
+	background: #c8552d;
+	border-radius: 3px;
 }
 
-/* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
-    .sidebar {
-        width: 260px;
-    }
-    
-    .sidebar-link {
-        padding: 12px 18px;
-        font-size: 0.9rem;
-    }
+	.sidebar {
+		width: 260px;
+	}
+	.sidebar-link {
+		padding: 12px 18px;
+		font-size: 0.9rem;
+	}
+}
+
+/* ============================================
+   FOOTER — Tienda Ropa EVESTIS
+   ============================================ */
+.evestis-footer {
+	background: #2b2622;
+	background-image:
+		radial-gradient(circle at 10% 0%, rgba(200, 85, 45, 0.10) 0%, transparent 40%),
+		radial-gradient(circle at 95% 100%, rgba(217, 168, 87, 0.08) 0%, transparent 45%);
+	margin-top: 56px;
+	padding: 48px 0 0;
+}
+
+.evestis-footer-grid {
+	display: grid;
+	grid-template-columns: 1.6fr 1fr 1fr 1fr;
+	gap: 32px;
+	padding-bottom: 36px;
+}
+
+.evestis-footer-brand .evestis-footer-logo {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	font-family: 'Playfair Display', Georgia, serif;
+	font-weight: 700;
+	font-size: 1.3rem;
+	color: #f7f3ec;
+	text-decoration: none;
+	margin-bottom: 12px;
+}
+
+.evestis-footer-logo-icon {
+	width: 36px;
+	height: 36px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: #c8552d;
+	color: #2b2622;
+	font-size: 0.95rem;
+	flex-shrink: 0;
+}
+
+.evestis-footer-brand p {
+	color: #a89a8e;
+	font-size: 0.86rem;
+	line-height: 1.6;
+	margin: 0;
+	max-width: 280px;
+}
+
+.evestis-footer-col h6 {
+	color: #d9a857;
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	margin-bottom: 16px;
+}
+
+.evestis-footer-col a {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: #c4b8ab;
+	font-size: 0.86rem;
+	text-decoration: none;
+	margin-bottom: 12px;
+	transition: color 0.2s ease, gap 0.2s ease;
+	width: fit-content;
+}
+
+.evestis-footer-col a:hover {
+	color: #f7f3ec;
+}
+
+.evestis-footer-col a i {
+	color: #c8552d;
+	font-size: 0.8rem;
+	width: 14px;
+	text-align: center;
+	flex-shrink: 0;
+}
+
+.evestis-footer-social {
+	display: flex;
+	gap: 10px;
+	margin-top: 8px;
+}
+
+.evestis-footer-social a {
+	width: 34px;
+	height: 34px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	background: rgba(247, 243, 236, 0.06);
+	border: 1.5px solid rgba(247, 243, 236, 0.14);
+	color: #f7f3ec;
+	font-size: 0.85rem;
+	text-decoration: none;
+	transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+	margin-bottom: 0;
+}
+
+.evestis-footer-social a:hover {
+	background: #c8552d;
+	border-color: #c8552d;
+	color: #fff;
+	transform: translateY(-2px);
+}
+
+.evestis-footer-bottom {
+	border-top: 1px solid rgba(247, 243, 236, 0.1);
+	padding: 18px 0;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 8px;
+	color: #8c8077;
+	font-size: 0.8rem;
+}
+
+.evestis-footer-credit {
+	color: #6b6157;
+}
+
+@media (max-width: 767px) {
+	.evestis-footer-grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 28px 20px;
+	}
+	.evestis-footer-brand {
+		grid-column: 1 / -1;
+	}
+	.evestis-footer-brand p {
+		max-width: none;
+	}
+	.evestis-footer-bottom {
+		flex-direction: column;
+		text-align: center;
+	}
 }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import com.cibertec.dto.ResultadoResponse;
 import com.cibertec.model.Usuario;
 import com.cibertec.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,10 @@ public class UsuarioService {
 
     public List<Usuario> getAll() {
         return usuarioRepository.findAll();
+    }
+
+    public List<Usuario> getAllClientes() {
+        return usuarioRepository.findByRolIdRolNot(1);
     }
 
     public Usuario getOne(Integer idUsuario) {
@@ -36,6 +41,37 @@ public class UsuarioService {
         } catch (Exception e) {
             return new ResultadoResponse(false, "Error al actualizar usuario");
         }
+    }
+
+    @Transactional
+    public ResultadoResponse updatePerfil(Integer idUsuario, String nombres, String apellidos, String correo) {
+
+        if (usuarioRepository.existsByCorreoAndIdUsuarioNot(correo, idUsuario)) {
+            return new ResultadoResponse(false, "Ese correo ya está en uso por otra cuenta");
+        }
+        try {
+            var usuario = usuarioRepository.findById(idUsuario).orElseThrow();
+            usuario.setNombres(nombres);
+            usuario.setApellidos(apellidos);
+            usuario.setCorreo(correo);
+            return new ResultadoResponse(true, "Perfil actualizado correctamente");
+        } catch (Exception e) {
+            return new ResultadoResponse(false, "Error al actualizar el perfil");
+        }
+    }
+
+    @Transactional
+    public ResultadoResponse activar(Integer idUsuario) {
+        var usuario = usuarioRepository.findById(idUsuario).orElseThrow();
+        usuario.setEstado(true);
+        return new ResultadoResponse(true, "Usuario " + usuario.getCorreo() + " activado.");
+    }
+
+    @Transactional
+    public ResultadoResponse desactivar(Integer idUsuario) {
+        var usuario = usuarioRepository.findById(idUsuario).orElseThrow();
+        usuario.setEstado(false);
+        return new ResultadoResponse(true, "Usuario " + usuario.getCorreo() + " desactivado.");
     }
 
     public ResultadoResponse delete(Integer idUsuario) {

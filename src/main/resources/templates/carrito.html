@@ -4,96 +4,313 @@
 	<meta charset="UTF-8">
 	<title>Tienda Ropa - Mi carrito</title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 	<link rel="stylesheet" th:href="@{/login.css}">
+	<link rel="stylesheet" th:href="@{/admin.css}">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<style>
+		/* ── Tarjeta de ítem ── */
+		.cart-item {
+			display: flex;
+			align-items: center;
+			gap: 16px;
+			padding: 18px 24px;
+			border-bottom: 1px solid #f0ebe4;
+			transition: background 0.15s;
+		}
+		.cart-item:last-child { border-bottom: none; }
+		.cart-item:hover { background: #faf8f5; }
+
+		.cart-item-img {
+			width: 72px;
+			height: 72px;
+			object-fit: cover;
+			border-radius: 12px;
+			border: 1.5px solid #e7e0d4;
+			flex-shrink: 0;
+		}
+		.cart-item-img-placeholder {
+			width: 72px;
+			height: 72px;
+			border-radius: 12px;
+			background: #f0ebe4;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: #c8b8a8;
+			font-size: 1.6rem;
+			flex-shrink: 0;
+		}
+
+		.cart-item-info { flex: 1; min-width: 0; }
+		.cart-item-name {
+			font-weight: 600;
+			color: #2b2622;
+			font-size: 0.97rem;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.cart-item-price {
+			font-size: 0.85rem;
+			color: #9a8f85;
+			margin-top: 2px;
+		}
+
+		/* ── Stepper +/- ── */
+		.qty-stepper {
+			display: flex;
+			align-items: center;
+			gap: 0;
+			border: 1.5px solid #e7e0d4;
+			border-radius: 10px;
+			overflow: hidden;
+			background: #fff;
+			flex-shrink: 0;
+		}
+		.qty-btn {
+			width: 34px;
+			height: 34px;
+			border: none;
+			background: none;
+			color: #2b2622;
+			font-size: 1rem;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: background 0.15s, color 0.15s;
+		}
+		.qty-btn:hover { background: #f0ebe4; color: #c8552d; }
+		.qty-btn:active { background: #e7e0d4; }
+		.qty-input {
+			width: 40px;
+			height: 34px;
+			border: none;
+			border-left: 1.5px solid #e7e0d4;
+			border-right: 1.5px solid #e7e0d4;
+			text-align: center;
+			font-size: 0.92rem;
+			font-weight: 600;
+			color: #2b2622;
+			background: #fff;
+			-moz-appearance: textfield;
+		}
+		.qty-input::-webkit-inner-spin-button,
+		.qty-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+		.qty-input:focus { outline: none; background: #faf8f5; }
+
+		/* ── Subtotal y eliminar ── */
+		.cart-item-subtotal {
+			min-width: 80px;
+			text-align: right;
+			font-weight: 700;
+			color: #2b2622;
+			font-size: 1rem;
+			flex-shrink: 0;
+		}
+		.btn-remove {
+			width: 34px;
+			height: 34px;
+			border: 1.5px solid #fde8e4;
+			background: #fff5f3;
+			color: #c8552d;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			transition: background 0.15s, border-color 0.15s;
+			flex-shrink: 0;
+		}
+		.btn-remove:hover { background: #c8552d; color: #fff; border-color: #c8552d; }
+
+		/* ── Resumen sticky ── */
+		.summary-card {
+			background: #fff;
+			border-radius: 16px;
+			box-shadow: 0 4px 24px rgba(43,38,34,0.09);
+			border: 1px solid rgba(43,38,34,0.07);
+			padding: 28px;
+			position: sticky;
+			top: 80px;
+		}
+		.summary-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 12px 0;
+			border-bottom: 1px solid #f0ebe4;
+			font-size: 0.92rem;
+			color: #756b61;
+		}
+		.summary-row:last-of-type { border-bottom: none; }
+		.summary-total {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding-top: 14px;
+			margin-top: 4px;
+			border-top: 2px solid #f0ebe4;
+		}
+		.summary-total-label { font-weight: 700; font-size: 1rem; color: #2b2622; }
+		.summary-total-amount { font-weight: 800; font-size: 1.4rem; color: #c8552d; }
+
+		/* ── Carrito vacío ── */
+		.empty-cart {
+			text-align: center;
+			padding: 60px 24px;
+		}
+		.empty-cart-icon {
+			width: 80px;
+			height: 80px;
+			background: #f0ebe4;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 2rem;
+			color: #c8b8a8;
+			margin: 0 auto 20px;
+		}
+	</style>
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
 	<div th:replace="~{fragments/nav :: nav}"></div>
 
-	<div class="container mt-4 flex-grow-1">
+	<div class="container mt-4 mb-5 flex-grow-1">
 
-		<h2 class="mb-4">
-			<i class="fa-solid fa-cart-shopping"></i> Mi carrito
-		</h2>
+		<!-- Header -->
+		<div class="page-header mb-4">
+			<div class="page-header-left">
+				<div class="header-icon">
+					<i class="fas fa-cart-shopping"></i>
+				</div>
+				<div>
+					<h2>Mi carrito</h2>
+					<p>Revisa los productos antes de confirmar tu compra</p>
+				</div>
+			</div>
+		</div>
 
-		<div th:if="${#lists.isEmpty(carrito)}" class="card shadow-sm">
-			<div class="card-body text-center py-5">
-				<i class="fa-solid fa-cart-shopping fa-3x text-muted mb-3"></i>
-				<p class="text-muted mb-3">Tu carrito está vacío.</p>
-				<a th:href="@{/inicio}" class="btn btn-dark">
+		<!-- Carrito vacío -->
+		<div th:if="${#lists.isEmpty(carrito)}" class="table-card">
+			<div class="empty-cart">
+				<div class="empty-cart-icon">
+					<i class="fas fa-cart-shopping"></i>
+				</div>
+				<h5 style="color:#2b2622; font-weight:600;">Tu carrito está vacío</h5>
+				<p class="text-muted mb-4" style="font-size:0.9rem;">Agrega productos desde la tienda para comenzar.</p>
+				<a th:href="@{/inicio}" class="btn-nuevo">
 					<i class="fas fa-shirt"></i> Ir a la tienda
 				</a>
 			</div>
 		</div>
 
+		<!-- Carrito con productos -->
 		<div th:unless="${#lists.isEmpty(carrito)}" class="row g-4">
 
+			<!-- Lista de productos -->
 			<div class="col-lg-8">
-				<div class="card shadow-sm">
-					<div class="table-responsive">
-						<table class="table align-middle mb-0">
-							<thead class="table-light">
-								<tr>
-									<th>Producto</th>
-									<th>Precio</th>
-									<th style="width: 140px;">Cantidad</th>
-									<th>Subtotal</th>
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="item : ${carrito}">
-									<td class="d-flex align-items-center gap-3">
-										<img th:if="${item.imagen}" th:src="@{'/img/' + ${item.imagen}}"
-											 style="width: 56px; height: 56px; object-fit: cover; border-radius: 8px;">
-										<span th:text="${item.nombre}"></span>
-									</td>
-									<td th:text="'S/ ' + ${#numbers.formatDecimal(item.precio, 1, 2)}"></td>
-									<td>
-										<form th:action="@{/carrito/actualizar}" method="post" class="d-flex gap-1">
-											<input type="hidden" name="idProd" th:value="${item.idProd}">
-											<input type="number" name="cantidad" min="1" th:value="${item.cantidad}"
-												   class="form-control form-control-sm" style="width: 70px;">
-											<button type="submit" class="btn btn-outline-dark btn-sm">
-												<i class="fas fa-rotate"></i>
-											</button>
-										</form>
-									</td>
-									<td class="fw-semibold" th:text="'S/ ' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}"></td>
-									<td>
-										<form th:action="@{/carrito/quitar}" method="post">
-											<input type="hidden" name="idProd" th:value="${item.idProd}">
-											<button type="submit" class="btn btn-outline-danger btn-sm">
-												<i class="fas fa-trash"></i>
-											</button>
-										</form>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+				<div class="table-card">
+
+					<!-- Cabecera de columnas -->
+					<div style="padding: 14px 24px 10px; border-bottom: 2px solid #f0ebe4;">
+						<div class="d-flex" style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:#9a8f85;">
+							<span style="flex:1;">Producto</span>
+							<span style="width:90px; text-align:center;">Cantidad</span>
+							<span style="width:90px; text-align:right;">Subtotal</span>
+							<span style="width:44px;"></span>
+						</div>
 					</div>
+
+					<!-- Ítems -->
+					<div th:each="item : ${carrito}" class="cart-item">
+
+						<!-- Imagen -->
+						<img th:if="${item.imagen}"
+							 th:src="@{'/img/' + ${item.imagen}}"
+							 class="cart-item-img"
+							 th:alt="${item.nombre}">
+						<div th:unless="${item.imagen}" class="cart-item-img-placeholder">
+							<i class="fas fa-shirt"></i>
+						</div>
+
+						<!-- Nombre y precio -->
+						<div class="cart-item-info">
+							<div class="cart-item-name" th:text="${item.nombre}"></div>
+							<div class="cart-item-price"
+								 th:text="'S/ ' + ${#numbers.formatDecimal(item.precio, 1, 2)} + ' c/u'"></div>
+						</div>
+
+						<!-- Stepper cantidad -->
+						<form th:action="@{/carrito/actualizar}" method="post" class="qty-stepper">
+							<input type="hidden" name="idProd" th:value="${item.idProd}">
+							<button type="button" class="qty-btn" title="Restar"
+									onclick="stepQty(this, -1)">
+								<i class="fas fa-minus" style="font-size:0.7rem;"></i>
+							</button>
+							<input type="number" name="cantidad" th:value="${item.cantidad}"
+								   class="qty-input" min="1">
+							<button type="button" class="qty-btn" title="Sumar"
+									onclick="stepQty(this, 1)">
+								<i class="fas fa-plus" style="font-size:0.7rem;"></i>
+							</button>
+						</form>
+
+						<!-- Subtotal -->
+						<div class="cart-item-subtotal"
+							 th:text="'S/ ' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}"></div>
+
+						<!-- Eliminar -->
+						<form th:action="@{/carrito/quitar}" method="post">
+							<input type="hidden" name="idProd" th:value="${item.idProd}">
+							<button type="submit" class="btn-remove" title="Quitar">
+								<i class="fas fa-trash" style="font-size:0.8rem;"></i>
+							</button>
+						</form>
+
+					</div>
+				</div>
+
+				<div class="mt-3">
+					<a th:href="@{/inicio}" class="btn-cancelar">
+						<i class="fas fa-arrow-left"></i> Seguir comprando
+					</a>
 				</div>
 			</div>
 
+			<!-- Resumen -->
 			<div class="col-lg-4">
-				<div class="card shadow-sm">
-					<div class="card-body">
-						<h5 class="card-title mb-3">Resumen</h5>
-						<div class="d-flex justify-content-between mb-2">
-							<span class="text-muted">Total</span>
-							<span class="fw-bold fs-5" th:text="'S/ ' + ${#numbers.formatDecimal(total, 1, 2)}"></span>
-						</div>
-						<form th:action="@{/carrito/confirmar}" method="post">
-							<button type="submit" class="btn btn-dark w-100 mt-2">
-								<i class="fas fa-check"></i> Confirmar compra
-							</button>
-						</form>
-						<a th:href="@{/inicio}" class="btn btn-outline-secondary w-100 mt-2">
-							Seguir comprando
-						</a>
+				<div class="summary-card">
+
+					<div class="section-label">
+						<i class="fas fa-receipt"></i> Resumen del pedido
 					</div>
+
+					<div class="summary-row">
+						<span>Subtotal</span>
+						<span style="color:#2b2622; font-weight:600;"
+							  th:text="'S/ ' + ${#numbers.formatDecimal(total, 1, 2)}"></span>
+					</div>
+					<div class="summary-row">
+						<span>Envío</span>
+						<span class="badge-activo">Gratis</span>
+					</div>
+
+					<div class="summary-total">
+						<span class="summary-total-label">Total</span>
+						<span class="summary-total-amount"
+							  th:text="'S/ ' + ${#numbers.formatDecimal(total, 1, 2)}"></span>
+					</div>
+
+					<form th:action="@{/carrito/confirmar}" method="post" class="mt-4">
+						<button type="submit" class="btn-guardar w-100">
+							<i class="fas fa-check me-2"></i> Confirmar compra
+						</button>
+					</form>
+
 				</div>
 			</div>
 
@@ -102,8 +319,17 @@
 	</div>
 
 	<div th:replace="~{fragments/footer :: footer}"></div>
-
 	<th:block th:utext="${alert}"></th:block>
+
+	<script>
+		function stepQty(btn, delta) {
+			var form = btn.closest('form');
+			var input = form.querySelector('input[name="cantidad"]');
+			var newVal = Math.max(1, parseInt(input.value) + delta);
+			input.value = newVal;
+			form.submit();
+		}
+	</script>
 
 </body>
 </html>

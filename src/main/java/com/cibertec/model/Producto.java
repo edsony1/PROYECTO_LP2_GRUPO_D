@@ -20,7 +20,7 @@ public class Producto {
     @Column(name = "nom_prod")
     private String nombre;
 
-    @Column(name = "descripcion")
+    @Column(name = "descripcion", unique = true)
     private String descripcion;
 
     @Column(name = "stock")
@@ -32,7 +32,7 @@ public class Producto {
     @Column(name = "estado")
     private Boolean estado;
 
-    @Column(name = "imagen")
+    @Column(name = "imagen", nullable = false)
     private String imagen;
 
     @ManyToOne

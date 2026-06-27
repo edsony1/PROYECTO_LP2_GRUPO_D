@@ -1,0 +1,259 @@
+/* ============================================
+   TIENDA.CSS — Storefront público
+   Tienda Ropa EVESTIS — estilo comercial / vibrante
+   ============================================ */
+
+/* ── Hero de bienvenida ── */
+.tienda-hero {
+    background: linear-gradient(120deg, #ff5f6d 0%, #ff8a3d 45%, #ffb648 100%);
+    border-radius: 20px;
+    padding: 44px 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(255, 95, 109, 0.25);
+}
+.tienda-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle at 88% 20%, rgba(255, 255, 255, 0.25) 0%, transparent 40%),
+        radial-gradient(circle at 8% 90%, rgba(43, 22, 0, 0.12) 0%, transparent 45%);
+    pointer-events: none;
+}
+.tienda-hero-eyebrow {
+    position: relative;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.18);
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 14px;
+}
+.tienda-hero h1 {
+    position: relative;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 2.2rem;
+    color: #fff;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+}
+.tienda-hero p {
+    position: relative;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.98rem;
+    margin: 0;
+    max-width: 520px;
+    font-weight: 500;
+}
+
+/* ── Barra de filtros por categoría ── */
+.tienda-filtros {
+    margin-bottom: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.filtro-pill {
+    background: #fff;
+    border: 2px solid #f0f0f0;
+    color: #555;
+    border-radius: 30px;
+    padding: 9px 20px;
+    font-size: 0.87rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.filtro-pill:hover {
+    border-color: #ff5f6d;
+    color: #ff5f6d;
+    transform: translateY(-2px);
+}
+.filtro-pill.activo {
+    background: linear-gradient(120deg, #ff5f6d 0%, #ff8a3d 100%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(255, 95, 109, 0.35);
+}
+.filtro-pill.activo:hover {
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ── Grilla y card de producto ── */
+.producto-card {
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.producto-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 36px rgba(255, 95, 109, 0.18);
+}
+
+.producto-img-wrap {
+    position: relative;
+    background: #fafafa;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+.producto-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+.producto-card:hover .producto-img-wrap img {
+    transform: scale(1.07);
+}
+.producto-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ddd;
+    font-size: 2rem;
+}
+
+.producto-categoria-tag {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #fff;
+    color: #ff5f6d;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 5px 11px;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.producto-body {
+    padding: 16px 18px 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.producto-nombre {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1.04rem;
+    color: #222;
+    margin: 0 0 4px;
+    line-height: 1.25;
+}
+.producto-desc {
+    color: #999;
+    font-size: 0.82rem;
+    margin: 0 0 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.2em;
+}
+.producto-proveedor {
+    color: #aaa;
+    font-size: 0.76rem;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.producto-footer {
+    margin-top: auto;
+}
+.producto-precio-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+.producto-precio {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 1.35rem;
+    color: #ff5f6d;
+}
+.producto-precio sup {
+    font-size: 0.68rem;
+    font-weight: 700;
+    margin-right: 2px;
+    top: -0.7em;
+    color: #ff8a3d;
+}
+.producto-stock-info {
+    font-size: 0.74rem;
+    color: #bbb;
+    font-weight: 600;
+}
+.producto-stock-info.low {
+    color: #ff5f6d;
+    font-weight: 700;
+}
+
+.btn-agregar-carrito {
+    width: 100%;
+    background: linear-gradient(120deg, #ff5f6d 0%, #ff8a3d 100%);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 11px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: filter 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 6px 14px rgba(255, 95, 109, 0.3);
+}
+.btn-agregar-carrito:hover:not(:disabled) {
+    filter: brightness(1.06);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 95, 109, 0.4);
+}
+.btn-agregar-carrito:disabled {
+    background: #eee;
+    color: #bbb;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* ── Estado vacío ── */
+.tienda-empty-state {
+    text-align: center;
+    padding: 70px 20px;
+    color: #bbb;
+}
+.tienda-empty-state i {
+    font-size: 2.6rem;
+    color: #f0f0f0;
+    margin-bottom: 14px;
+    display: block;
+}
+.tienda-empty-state p {
+    font-size: 0.95rem;
+    margin: 0;
+    font-weight: 600;
+}
