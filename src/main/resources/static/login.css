@@ -1,25 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+/* ========== FONDO DE TIENDA (solo páginas internas) ========== */
+.fondo-tienda {
+    background-image: url('/img/img_fondo.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    position: relative;
+}
 
-body {
-	font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+.fondo-tienda::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(43, 38, 34, 0.35); /* Antes 0.65, ahora 0.35 = menos opaco */
+    z-index: -1;
 }
 
 .auth-wrapper {
-	background: #f7f3ec;
-	background-image:
-		radial-gradient(circle at 15% 20%, rgba(200, 85, 45, 0.08) 0%, transparent 45%),
-		radial-gradient(circle at 85% 80%, rgba(217, 168, 87, 0.10) 0%, transparent 45%);
-	padding: 56px 15px;
+    background: #f7f3ec;
+    background-image:
+        radial-gradient(circle at 15% 20%, rgba(200, 85, 45, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(217, 168, 87, 0.10) 0%, transparent 45%);
+    padding: 56px 15px;
 }
 
 .login-card {
-	background: #ffffff;
-	border-radius: 18px;
-	padding: 44px 40px;
-	width: 100%;
-	max-width: 400px;
-	box-shadow: 0 20px 45px rgba(43, 38, 34, 0.12);
-	border: 1px solid rgba(43, 38, 34, 0.06);
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 44px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 45px rgba(43, 38, 34, 0.12);
+    border: 1px solid rgba(43, 38, 34, 0.06);
 }
 
 .login-icon {
@@ -51,6 +68,7 @@ body {
 	margin-bottom: 30px;
 	font-size: 0.92rem;
 }
+
 
 .login-card .form-label {
 	font-size: 0.85rem;
@@ -178,4 +196,188 @@ body {
 	align-items: center;
 	gap: 6px;
 	white-space: nowrap;
+}
+/* ========== BOTÓN HAMBURGUESA ========== */
+.btn-menu {
+    background: transparent;
+    border: 1.5px solid rgba(247, 243, 236, 0.25);
+    color: #f7f3ec;
+    font-size: 1.4rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.btn-menu:hover {
+    background: rgba(247, 243, 236, 0.08);
+    border-color: #d9a857;
+    color: #d9a857;
+}
+
+/* ========== OVERLAY (FONDO OSCURO) ========== */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(43, 38, 34, 0.6);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ========== MENÚ LATERAL ========== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: #2b2622;
+    z-index: 999;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.4);
+    overflow-y: auto;
+}
+
+.sidebar.active {
+    transform: translateX(0);
+}
+
+/* Encabezado del menú */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 15px;
+    border-bottom: 1px solid rgba(247, 243, 236, 0.1);
+}
+
+.sidebar-header h5 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #f7f3ec;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.btn-close-menu {
+    background: transparent;
+    border: none;
+    color: #f7f3ec;
+    font-size: 1.3rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-close-menu:hover {
+    background: #c8552d;
+    color: #fff;
+}
+
+/* Links del menú */
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 22px;
+    color: #f7f3ec;
+    text-decoration: none;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    border-left: 3px solid transparent;
+    margin: 2px 0;
+}
+
+.sidebar-link i {
+    font-size: 1.1rem;
+    width: 22px;
+    text-align: center;
+    color: #d9a857;
+    transition: all 0.25s ease;
+}
+
+.sidebar-link:hover {
+    background: rgba(200, 85, 45, 0.15);
+    border-left: 3px solid #c8552d;
+    color: #fff;
+    padding-left: 28px;
+}
+
+.sidebar-link:hover i {
+    color: #c8552d;
+    transform: scale(1.15);
+}
+
+/* Link activo (página actual) */
+.sidebar-link.active {
+    background: rgba(200, 85, 45, 0.2);
+    border-left: 3px solid #c8552d;
+    color: #fff;
+}
+
+.sidebar-link.active i {
+    color: #c8552d;
+}
+
+/* Separador de secciones */
+.sidebar-section {
+    padding: 20px 22px 8px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: #d9a857;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+}
+
+/* ========== SCROLLBAR DEL MENÚ ========== */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #1f1a17;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #c8552d;
+    border-radius: 3px;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 260px;
+    }
+    
+    .sidebar-link {
+        padding: 12px 18px;
+        font-size: 0.9rem;
+    }
 }

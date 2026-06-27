@@ -1,63 +1,96 @@
 <div th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
 
-	<nav class="tienda-nav navbar navbar-expand-lg">
-		<div class="container py-2">
+    <nav class="tienda-nav navbar navbar-expand-lg">
+        <div class="container py-2">
 
-			<a class="navbar-brand" th:href="@{/inicio}">
-				<span class="navbar-brand-icon"><i class="fa-solid fa-shirt"></i></span>
-				EVESTIS
-			</a>
+			<button th:if="${session.idUsuario != null}" class="btn-menu" onclick="toggleMenu()" aria-label="Abrir menú">
+			    <i class="fa-solid fa-bars"></i>
+			</button>
 
-			<div class="d-flex align-items-center ms-auto gap-2">
+            <a class="navbar-brand ms-3" th:href="@{/inicio}">
+                <span class="navbar-brand-icon"><i class="fa-solid fa-shirt"></i></span>
+                EVESTIS
+            </a>
 
-				<a th:if="${session.idUsuario == null}"
-				   th:href="@{/login}"
-				   class="btn btn-acento btn-sm">
-					<i class="fas fa-sign-in-alt"></i> Iniciar sesión
-				</a>
+            <div class="d-flex align-items-center ms-auto gap-2">
 
-				<div th:if="${session.idUsuario != null}" class="d-flex align-items-center gap-2">
+                <a th:if="${session.idUsuario == null}"
+                   th:href="@{/login}"
+                   class="btn btn-acento btn-sm">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar sesión
+                </a>
 
-					<a th:if="${session.idRol == 1}" th:href="@{/dashboard}" class="btn btn-nav-link btn-sm">
-						<i class="fas fa-gauge"></i> Dashboard
-					</a>
+                <div th:if="${session.idUsuario != null}" class="d-flex align-items-center gap-2">
 
-					<a th:if="${session.idRol == 1}" th:href="@{/producto}" class="btn btn-nav-link btn-sm">
-						<i class="fas fa-tags"></i> Productos
-					</a>
+                    <a th:if="${session.idRol == 2}" th:href="@{/carrito}" 
+                       class="btn btn-nav-link btn-sm position-relative">
+                        <i class="fas fa-cart-shopping"></i> Carrito
+                        <span th:if="${totalItemsCarrito > 0}"
+                              th:text="${totalItemsCarrito}"
+                              class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle"
+                              style="font-size: 0.65rem;"></span>
+                    </a>
 
-					<a th:if="${session.idRol == 1}" th:href="@{/proveedor/listado}" class="btn btn-nav-link btn-sm">
-						<i class="fas fa-truck"></i> Proveedores
-					</a>
+                    <span class="nav-user">
+                        <i class="fas fa-circle-user"></i>
+                        <h1 class="h5 m-0">Bienvenido, <span th:text="${session.fullName}"></span></h1>
+                    </span>
 
-					<a th:if="${session.idRol == 2}" th:href="@{/mis-pedidos}" class="btn btn-nav-link btn-sm">
-						<i class="fas fa-receipt"></i> Mis pedidos
-					</a>
+                    <a th:href="@{/login/cerrar-sesion}" class="btn btn-nav-link btn-sm">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
 
-					<a th:if="${session.idRol == 2}" th:href="@{/carrito}" class="btn btn-nav-link btn-sm position-relative">
-						<i class="fas fa-cart-shopping"></i> Carrito
-						<span th:if="${totalItemsCarrito > 0}"
-							  th:text="${totalItemsCarrito}"
-							  class="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle"
-							  style="font-size: 0.65rem;"></span>
-					</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-					<span class="nav-divider"></span>
+    <!-- 🍔 MENÚ LATERAL -->
+    <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h5>EVESTIS</h5>
+            <button class="btn-close-menu" onclick="toggleMenu()" aria-label="Cerrar menú">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
-					<span class="nav-user">
-						<i class="fas fa-circle-user"></i>
-						<h1 class="h5 m-0">Bienvenido, <span th:text="${session.fullName}"></span></h1>
-					</span>
+        <!-- ADMIN -->
+        <div th:if="${session.idRol == 1}">
+            <div class="sidebar-section">Administración</div>
+            <a th:href="@{/dashboard}" class="sidebar-link">
+                <i class="fas fa-gauge"></i> Dashboard
+            </a>
+            <a th:href="@{/producto}" class="sidebar-link">
+                <i class="fas fa-tags"></i> Productos
+            </a>
+            <a th:href="@{/proveedor/listado}" class="sidebar-link">
+                <i class="fas fa-truck"></i> Proveedores
+            </a>
+        </div>
 
-					<a th:href="@{/login/cerrar-sesion}" class="btn btn-nav-link btn-sm">
-						<i class="fas fa-sign-out-alt"></i>
-					</a>
+        <!-- CLIENTE -->
+        <div th:if="${session.idRol == 2}">
+            <div class="sidebar-section">Mi cuenta</div>
+            <a th:href="@{/mis-pedidos}" class="sidebar-link">
+                <i class="fas fa-receipt"></i> Mis pedidos
+            </a>
+            <a th:href="@{/carrito}" class="sidebar-link">
+                <i class="fas fa-cart-shopping"></i> Carrito
+                <span th:if="${totalItemsCarrito > 0}" 
+                      th:text="'(' + ${totalItemsCarrito} + ')'" 
+                      style="color: #d9a857; font-size: 0.85rem; margin-left: 4px;"></span>
+            </a>
+        </div>
+    </div>
 
-				</div>
+    <!-- Overlay -->
+    <div id="overlay" class="sidebar-overlay" onclick="toggleMenu()"></div>
 
-			</div>
-
-		</div>
-	</nav>
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+    </script>
 
 </div>
