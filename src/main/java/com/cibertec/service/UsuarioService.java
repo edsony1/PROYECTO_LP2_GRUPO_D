@@ -44,13 +44,37 @@ public class UsuarioService {
     }
 
     @Transactional
-    public ResultadoResponse updatePerfil(Integer idUsuario, String nombres, String apellidos, String correo) {
+    public ResultadoResponse updatePerfil(Integer idUsuario, String nombres, String apellidos, String correo,
+                                          String passwordActual, String passwordNueva, String passwordConfirmar) {
 
         if (usuarioRepository.existsByCorreoAndIdUsuarioNot(correo, idUsuario)) {
             return new ResultadoResponse(false, "Ese correo ya está en uso por otra cuenta");
         }
+
+        // Validar cambio de contraseña solo si el usuario llenó algo
+        boolean cambiarPassword = passwordNueva != null && !passwordNueva.isBlank();
+        if (cambiarPassword) {
+            if (passwordActual == null || passwordActual.isBlank()) {
+                return new ResultadoResponse(false, "Debes ingresar tu contraseña actual");
+            }
+            if (passwordNueva.length() < 6) {
+                return new ResultadoResponse(false, "La nueva contraseña debe tener al menos 6 caracteres");
+            }
+            if (!passwordNueva.equals(passwordConfirmar)) {
+                return new ResultadoResponse(false, "Las contraseñas nuevas no coinciden");
+            }
+        }
+
         try {
             var usuario = usuarioRepository.findById(idUsuario).orElseThrow();
+
+            if (cambiarPassword) {
+                if (!passwordActual.equals(usuario.getPassword())) {
+                    return new ResultadoResponse(false, "La contraseña actual es incorrecta");
+                }
+                usuario.setPassword(passwordNueva);
+            }
+
             usuario.setNombres(nombres);
             usuario.setApellidos(apellidos);
             usuario.setCorreo(correo);

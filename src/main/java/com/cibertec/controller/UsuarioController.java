@@ -85,6 +85,9 @@ public class UsuarioController {
             @RequestParam String nombres,
             @RequestParam String apellidos,
             @RequestParam String correo,
+            @RequestParam(required = false, defaultValue = "") String passwordActual,
+            @RequestParam(required = false, defaultValue = "") String passwordNueva,
+            @RequestParam(required = false, defaultValue = "") String passwordConfirmar,
             HttpSession session,
             RedirectAttributes flash) {
 
@@ -92,10 +95,10 @@ public class UsuarioController {
         if (redirect != null) return redirect;
 
         Integer idUsuario = (Integer) session.getAttribute("idUsuario");
-        var resultado = usuarioService.updatePerfil(idUsuario, nombres, apellidos, correo);
+        var resultado = usuarioService.updatePerfil(idUsuario, nombres, apellidos, correo,
+                passwordActual, passwordNueva, passwordConfirmar);
 
         if (resultado.success()) {
-
             session.setAttribute("fullName", nombres + " " + apellidos);
             flash.addFlashAttribute("toast",
                     Alert.sweetToast(resultado.mensaje(), "success", 4000));
