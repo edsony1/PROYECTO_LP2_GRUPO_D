@@ -1,13 +1,18 @@
 package com.cibertec.model;
 
+import org.hibernate.annotations.DynamicInsert;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "tb_productos")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@DynamicInsert
 public class Producto {
+
     @Id
     @Column(name = "id_prod")
     private String idProd;
@@ -33,4 +38,12 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "idcategoria")
     private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "idproveedor")
+    private Proveedor proveedor;
+
+    public String getEstadoDescripcion() {
+        return estado != null && estado ? "Activo" : "Inactivo";
+    }
 }

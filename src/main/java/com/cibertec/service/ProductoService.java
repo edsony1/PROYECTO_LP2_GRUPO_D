@@ -2,84 +2,78 @@ package com.cibertec.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
+import com.cibertec.dto.ProductoFilter;
 import com.cibertec.dto.ResultadoResponse;
 import com.cibertec.model.Producto;
 import com.cibertec.repository.ProductoRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ProductoService {
+
     private final ProductoRepository productoRepository;
 
     public List<Producto> getAll() {
         return productoRepository.findAllByOrderByIdProdDesc();
     }
-    public List<Producto> buscarPorNombre(String nombre) {
-        return productoRepository.findByNombreContaining(nombre);
+
+    public List<Producto> getAllActive() {
+        return productoRepository.findAllByEstadoTrue();
     }
 
     public List<Producto> getByCategoria(Integer idCategoria) {
-        return productoRepository.findByCategoria_IdCategoria(idCategoria);
+        return productoRepository.findByCategoriaIdCategoria(idCategoria);
+    }
+
+    public List<Producto> buscarPorNombre(String nombre) {
+        return productoRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+
+    public List<Producto> search(ProductoFilter filter) {
+        return productoRepository.findAllByFilters(filter.getIdCategoria(), filter.getIdProveedor());
+    }
+
+    public ResultadoResponse create(Producto producto) {
+        try {
+            var registro = productoRepository.save(producto);
+            var mensaje = String.format("Producto con Id %s registrado", registro.getIdProd());
+            return new ResultadoResponse(true, mensaje);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultadoResponse(false, "Hubo un error en la transacción");
+        }
     }
 
     public Producto getOne(String idProd) {
         return productoRepository.findById(idProd).orElseThrow();
     }
 
-    public ResultadoResponse create(Producto producto) {
-        try {
-            producto.setIdProd(generarIdProd());
-            producto.setEstado(true);
-            var registro = productoRepository.save(producto);
-            return new ResultadoResponse(true, "Producto " + registro.getNombre() + " registrado.");
-        } catch (Exception e) {
-            return new ResultadoResponse(false, "Error al registrar producto");
-        }
-    }
-
     public ResultadoResponse update(Producto producto) {
         try {
             var registro = productoRepository.save(producto);
-            return new ResultadoResponse(true, "Producto " + registro.getNombre() + " actualizado.");
+            var mensaje = String.format("Producto con Id %s actualizado", registro.getIdProd());
+            return new ResultadoResponse(true, mensaje);
         } catch (Exception e) {
-            return new ResultadoResponse(false, "Error al actualizar producto");
+            e.printStackTrace();
+            return new ResultadoResponse(false, "Hubo un error en la transacción");
         }
     }
 
-    public ResultadoResponse desactivar(String idProd) {
-        try {
-            var producto = getOne(idProd);
-            producto.setEstado(false);
-            productoRepository.save(producto);
-            return new ResultadoResponse(true, "Producto desactivado.");
-        } catch (Exception e) {
-            return new ResultadoResponse(false, "Error al desactivar producto");
-        }
-    }
-
+    @Transactional
     public ResultadoResponse activar(String idProd) {
-        try {
-            var producto = getOne(idProd);
-            producto.setEstado(true);
-            productoRepository.save(producto);
-            return new ResultadoResponse(true, "Producto activado.");
-        } catch (Exception e) {
-            return new ResultadoResponse(false, "Error al activar producto");
-        }
+        var producto = productoRepository.findById(idProd).orElseThrow();
+        producto.setEstado(true);
+        var mensaje = String.format("Producto con Id %s activado", producto.getIdProd());
+        return new ResultadoResponse(true, mensaje);
     }
 
-    private String generarIdProd() {
-        var productos = productoRepository.findAll();
-
-        int siguiente = productos.stream()
-                .map(Producto::getIdProd)
-                .filter(id -> id != null && id.trim().matches("PR\\d+"))
-                .map(id -> id.trim().substring(2))
-                .mapToInt(Integer::parseInt)
-                .max()
-                .orElse(0) + 1;
-
-        return String.format("PR%03d", siguiente);
+    @Transactional
+    public ResultadoResponse desactivar(String idProd) {
+        var producto = productoRepository.findById(idProd).orElseThrow();
+        producto.setEstado(false);
+        var mensaje = String.format("Producto con Id %s desactivado", producto.getIdProd());
+        return new ResultadoResponse(true, mensaje);
     }
 }
