@@ -1,0 +1,377 @@
+/* ============================================
+   ADMIN.CSS — Estilos para el panel de gestión
+   Tienda Ropa EVESTIS
+   ============================================ */
+
+/* ── Page Header (listados) ── */
+.page-header {
+    background: linear-gradient(135deg, #2b2622 0%, #3d3028 100%);
+    border-radius: 16px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+.page-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+.page-header .header-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(200, 85, 45, 0.2);
+    border: 1.5px solid #c8552d;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c8552d;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+.page-header h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    color: #f7f3ec;
+    margin: 0;
+}
+.page-header p {
+    color: #a89a8e;
+    margin: 2px 0 0;
+    font-size: 0.85rem;
+}
+
+/* ── Form Page Header (formularios) ── */
+.form-page-header {
+    background: linear-gradient(135deg, #2b2622 0%, #3d3028 100%);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.form-page-header .header-icon {
+    width: 52px;
+    height: 52px;
+    background: rgba(200, 85, 45, 0.2);
+    border: 1.5px solid #c8552d;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c8552d;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+/* Variante dorada para edición */
+.form-page-header .header-icon.gold {
+    background: rgba(217, 168, 87, 0.15);
+    border-color: #d9a857;
+    color: #d9a857;
+}
+.form-page-header h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.6rem;
+    color: #f7f3ec;
+    margin: 0;
+}
+.form-page-header p {
+    color: #a89a8e;
+    margin: 3px 0 0;
+    font-size: 0.88rem;
+}
+.id-badge {
+    background: rgba(217, 168, 87, 0.15);
+    border: 1px solid rgba(217, 168, 87, 0.3);
+    color: #d9a857;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-top: 6px;
+    display: inline-block;
+}
+
+/* ── Card contenedor ── */
+.form-card,
+.table-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(43, 38, 34, 0.09);
+    border: 1px solid rgba(43, 38, 34, 0.07);
+    overflow: hidden;
+}
+
+/* ── Secciones del formulario ── */
+.form-section {
+    padding: 28px 32px;
+}
+.form-section + .form-section {
+    border-top: 1px solid #f0ebe4;
+}
+.section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #c8552d;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.section-label.gold {
+    color: #d9a857;
+}
+.section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #f0ebe4;
+}
+
+/* ── Campos del formulario ── */
+.form-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #4a423b;
+    margin-bottom: 6px;
+}
+.form-control,
+.form-select {
+    border: 1.5px solid #e7e0d4;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.93rem;
+    color: #2b2622;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus,
+.form-select:focus {
+    border-color: #c8552d;
+    box-shadow: 0 0 0 3px rgba(200, 85, 45, 0.12);
+    outline: none;
+}
+.form-control.gold:focus,
+.form-select.gold:focus {
+    border-color: #d9a857;
+    box-shadow: 0 0 0 3px rgba(217, 168, 87, 0.12);
+}
+textarea.form-control {
+    resize: vertical;
+    min-height: 90px;
+}
+.form-control.readonly-field {
+    background: #faf8f5;
+    color: #9a8f85;
+    cursor: default;
+}
+
+/* ── Input con ícono interno ── */
+.input-icon-wrap {
+    position: relative;
+}
+.input-icon-wrap .input-icon {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #b8a99a;
+    font-size: 0.85rem;
+    pointer-events: none;
+}
+.input-icon-wrap .form-control,
+.input-icon-wrap .form-select {
+    padding-left: 36px;
+}
+
+/* ── Precio con prefijo S/ ── */
+.price-input-wrap {
+    position: relative;
+}
+.price-input-wrap .currency {
+    position: absolute;
+    left: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: 600;
+    color: #756b61;
+    font-size: 0.88rem;
+    pointer-events: none;
+}
+.price-input-wrap .form-control {
+    padding-left: 38px;
+}
+
+/* ── Footer del formulario ── */
+.form-footer {
+    background: #faf8f5;
+    padding: 20px 32px;
+    border-top: 1px solid #f0ebe4;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.btn-guardar {
+    background: #2b2622;
+    color: #f7f3ec;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: background 0.2s, transform 0.15s;
+    cursor: pointer;
+}
+.btn-guardar:hover {
+    background: #c8552d;
+    color: #fff;
+    transform: translateY(-1px);
+}
+.btn-guardar.gold:hover {
+    background: #d9a857;
+    color: #2b2622;
+}
+.btn-cancelar {
+    background: transparent;
+    color: #756b61;
+    border: 1.5px solid #e7e0d4;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 500;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-cancelar:hover {
+    border-color: #2b2622;
+    color: #2b2622;
+}
+
+/* ── Tabla de listado ── */
+.table-card table {
+    margin: 0;
+}
+.table-card thead tr {
+    background: #faf8f5;
+}
+.table-card thead th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #756b61;
+    border-bottom: 2px solid #f0ebe4;
+    padding: 14px 20px;
+}
+.table-card tbody td {
+    padding: 14px 20px;
+    font-size: 0.92rem;
+    color: #2b2622;
+    border-bottom: 1px solid #f7f3ec;
+    vertical-align: middle;
+}
+.table-card tbody tr:last-child td {
+    border-bottom: none;
+}
+.table-card tbody tr:hover {
+    background: #fdf9f6;
+}
+
+/* ── Avatar de fila ── */
+.row-avatar {
+    width: 36px;
+    height: 36px;
+    background: #fbeee5;
+    border: 1.5px solid #f0d4c5;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #c8552d;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* ── Badges de estado ── */
+.badge-activo {
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-inactivo {
+    background: #f3f4f6;
+    color: #6b7280;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* ── Botones de acción en tabla ── */
+.btn-accion {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1.5px solid;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    text-decoration: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.btn-accion:hover { transform: translateY(-1px); }
+.btn-editar  { border-color: #e7e0d4; color: #4a423b; background: #fff; }
+.btn-editar:hover  { border-color: #2b2622; color: #2b2622; }
+.btn-activar { border-color: #bbf7d0; color: #059669; background: #f0fdf4; }
+.btn-activar:hover { background: #d1fae5; }
+.btn-desactivar { border-color: #fecaca; color: #dc2626; background: #fff5f5; }
+.btn-desactivar:hover { background: #fee2e2; }
+
+/* ── Botón nuevo (header de listado) ── */
+.btn-nuevo {
+    background: #c8552d;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 9px 18px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+}
+.btn-nuevo:hover {
+    background: #b34a26;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* ── Estado vacío ── */
+.empty-state {
+    padding: 48px 20px;
+    text-align: center;
+    color: #a89a8e;
+}
+.empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    opacity: 0.4;
+    display: block;
+}

@@ -12,6 +12,9 @@ public interface ProductoRepository extends JpaRepository<Producto, String> {
 
     List<Producto> findAllByOrderByIdProdDesc();
 
+    @Query("SELECT p.idProd FROM Producto p ORDER BY p.idProd DESC LIMIT 1")
+    String findLastId();
+
     List<Producto> findAllByEstadoTrue();
 
     List<Producto> findByCategoriaIdCategoria(Integer idCategoria);

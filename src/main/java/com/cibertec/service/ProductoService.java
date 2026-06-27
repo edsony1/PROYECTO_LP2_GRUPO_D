@@ -37,6 +37,7 @@ public class ProductoService {
 
     public ResultadoResponse create(Producto producto) {
         try {
+            producto.setIdProd(generarId());
             var registro = productoRepository.save(producto);
             var mensaje = String.format("Producto con Id %s registrado", registro.getIdProd());
             return new ResultadoResponse(true, mensaje);
@@ -75,5 +76,25 @@ public class ProductoService {
         producto.setEstado(false);
         var mensaje = String.format("Producto con Id %s desactivado", producto.getIdProd());
         return new ResultadoResponse(true, mensaje);
+    }
+
+    @Transactional
+    public void descontarStock(String idProd, Integer cantidad) {
+        var producto = productoRepository.findById(idProd).orElseThrow();
+
+        if (producto.getStock() == null || producto.getStock() < cantidad) {
+            throw new IllegalStateException(
+                    "Stock insuficiente para " + producto.getNombre()
+                            + " (disponible: " + (producto.getStock() == null ? 0 : producto.getStock()) + ")");
+        }
+
+        producto.setStock(producto.getStock() - cantidad);
+    }
+
+    private String generarId() {
+        String ultimo = productoRepository.findLastId();
+        if (ultimo == null) return "PR001";
+        int numero = Integer.parseInt(ultimo.substring(2)) + 1;
+        return String.format("PR%03d", numero);
     }
 }

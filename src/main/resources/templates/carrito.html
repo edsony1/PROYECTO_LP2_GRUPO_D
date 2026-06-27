@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Tienda Ropa - Mi carrito</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+	<link rel="stylesheet" th:href="@{/login.css}">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+	<div th:replace="~{fragments/nav :: nav}"></div>
+
+	<div class="container mt-4 flex-grow-1">
+
+		<h2 class="mb-4">
+			<i class="fa-solid fa-cart-shopping"></i> Mi carrito
+		</h2>
+
+		<div th:if="${#lists.isEmpty(carrito)}" class="card shadow-sm">
+			<div class="card-body text-center py-5">
+				<i class="fa-solid fa-cart-shopping fa-3x text-muted mb-3"></i>
+				<p class="text-muted mb-3">Tu carrito está vacío.</p>
+				<a th:href="@{/inicio}" class="btn btn-dark">
+					<i class="fas fa-shirt"></i> Ir a la tienda
+				</a>
+			</div>
+		</div>
+
+		<div th:unless="${#lists.isEmpty(carrito)}" class="row g-4">
+
+			<div class="col-lg-8">
+				<div class="card shadow-sm">
+					<div class="table-responsive">
+						<table class="table align-middle mb-0">
+							<thead class="table-light">
+								<tr>
+									<th>Producto</th>
+									<th>Precio</th>
+									<th style="width: 140px;">Cantidad</th>
+									<th>Subtotal</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item : ${carrito}">
+									<td class="d-flex align-items-center gap-3">
+										<img th:if="${item.imagen}" th:src="@{'/img/' + ${item.imagen}}"
+											 style="width: 56px; height: 56px; object-fit: cover; border-radius: 8px;">
+										<span th:text="${item.nombre}"></span>
+									</td>
+									<td th:text="'S/ ' + ${#numbers.formatDecimal(item.precio, 1, 2)}"></td>
+									<td>
+										<form th:action="@{/carrito/actualizar}" method="post" class="d-flex gap-1">
+											<input type="hidden" name="idProd" th:value="${item.idProd}">
+											<input type="number" name="cantidad" min="1" th:value="${item.cantidad}"
+												   class="form-control form-control-sm" style="width: 70px;">
+											<button type="submit" class="btn btn-outline-dark btn-sm">
+												<i class="fas fa-rotate"></i>
+											</button>
+										</form>
+									</td>
+									<td class="fw-semibold" th:text="'S/ ' + ${#numbers.formatDecimal(item.subtotal, 1, 2)}"></td>
+									<td>
+										<form th:action="@{/carrito/quitar}" method="post">
+											<input type="hidden" name="idProd" th:value="${item.idProd}">
+											<button type="submit" class="btn btn-outline-danger btn-sm">
+												<i class="fas fa-trash"></i>
+											</button>
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-4">
+				<div class="card shadow-sm">
+					<div class="card-body">
+						<h5 class="card-title mb-3">Resumen</h5>
+						<div class="d-flex justify-content-between mb-2">
+							<span class="text-muted">Total</span>
+							<span class="fw-bold fs-5" th:text="'S/ ' + ${#numbers.formatDecimal(total, 1, 2)}"></span>
+						</div>
+						<form th:action="@{/carrito/confirmar}" method="post">
+							<button type="submit" class="btn btn-dark w-100 mt-2">
+								<i class="fas fa-check"></i> Confirmar compra
+							</button>
+						</form>
+						<a th:href="@{/inicio}" class="btn btn-outline-secondary w-100 mt-2">
+							Seguir comprando
+						</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+
+	<th:block th:utext="${alert}"></th:block>
+
+</body>
+</html>

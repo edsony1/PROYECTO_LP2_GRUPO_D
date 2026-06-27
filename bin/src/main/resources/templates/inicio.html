@@ -47,15 +47,9 @@
 						<div class="mt-auto">
 							<p class="fw-bold fs-5 mb-1" th:text="'S/ ' + ${#numbers.formatDecimal(producto.precio, 1, 2)}"></p>
 							<p class="small text-muted mb-2" th:text="'Stock: ' + ${producto.stock}"></p>
-							<form th:action="@{/carrito/agregar}" method="post">
-								<input type="hidden" name="idProd" th:value="${producto.idProd}">
-								<input type="hidden" name="cantidad" value="1">
-								<button type="submit" class="btn btn-dark w-100" th:disabled="${producto.stock == null or producto.stock == 0}">
-									<i class="fas fa-cart-plus"></i>
-									<span th:if="${producto.stock != null and producto.stock > 0}">Agregar al carrito</span>
-									<span th:unless="${producto.stock != null and producto.stock > 0}">Sin stock</span>
-								</button>
-							</form>
+							<button type="button" class="btn btn-dark w-100">
+								<i class="fas fa-cart-plus"></i> Agregar al carrito
+							</button>
 						</div>
 					</div>
 				</div>

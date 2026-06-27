@@ -25,13 +25,13 @@ public class ProveedorController {
     @GetMapping("listado")
     public String listado(Model model) {
         model.addAttribute("lstProveedores", proveedorService.getAll());
-        return "proveedor/listado";
+        return "proveedor/proveedor-lista";
     }
 
     @GetMapping("nuevo")
     public String nuevo(Model model) {
         model.addAttribute("proveedor", new Proveedor());
-        return "proveedor/nuevo";
+        return "proveedor/proveedor-nuevo";
     }
 
     @PostMapping("registrar")
@@ -44,7 +44,7 @@ public class ProveedorController {
         if (!response.success()) {
             model.addAttribute("proveedor", proveedor);
             model.addAttribute("alert", Alert.sweetAlertError(response.mensaje()));
-            return "proveedor/nuevo";
+            return "proveedor/proveedor-nuevo";
         }
 
         flash.addFlashAttribute("toast", Alert.sweetToast(response.mensaje(), "success", 5000));
@@ -54,7 +54,7 @@ public class ProveedorController {
     @GetMapping("edicion/{id}")
     public String edicion(@PathVariable Integer id, Model model) {
         model.addAttribute("proveedor", proveedorService.getOne(id));
-        return "proveedor/edicion";
+        return "proveedor/proveedor-editar";
     }
 
     @PostMapping("guardar")
@@ -67,14 +67,14 @@ public class ProveedorController {
         if (!response.success()) {
             model.addAttribute("proveedor", proveedor);
             model.addAttribute("alert", Alert.sweetAlertError(response.mensaje()));
-            return "proveedor/edicion";
+            return "proveedor/proveedor-editar";
         }
 
         flash.addFlashAttribute("toast", Alert.sweetToast(response.mensaje(), "success", 5000));
         return "redirect:/proveedor/listado";
     }
 
-    @PostMapping("cambiar-estado")
+    @PostMapping("cambiar-estado/{id}")
     public String cambiarEstado(@PathVariable Integer id, RedirectAttributes flash) {
         var response = proveedorService.changeActive(id);
 

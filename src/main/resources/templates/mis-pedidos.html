@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Tienda Ropa - Mis pedidos</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+	<link rel="stylesheet" th:href="@{/login.css}">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+	<div th:replace="~{fragments/nav :: nav}"></div>
+
+	<div class="container mt-4 flex-grow-1">
+
+		<h2 class="mb-4">
+			<i class="fa-solid fa-receipt"></i> Mis pedidos
+		</h2>
+
+		<p th:if="${#lists.isEmpty(pedidos)}" class="text-muted">
+			Todavía no has realizado ningún pedido.
+		</p>
+
+		<div th:each="pedido : ${pedidos}" class="card shadow-sm mb-3">
+			<div class="card-body">
+
+				<div class="d-flex justify-content-between align-items-center mb-3">
+					<div>
+						<h5 class="mb-0">Pedido Nro. <span th:text="${pedido.idPedido}"></span></h5>
+						<small class="text-muted" th:text="${#temporals.format(pedido.fecha, 'dd/MM/yyyy')}"></small>
+					</div>
+					<!-- Comprobante en PDF: pendiente, por ahora el botón no hace nada -->
+					<button type="button" class="btn btn-outline-dark btn-sm" disabled title="Próximamente">
+						<i class="fa-solid fa-file-pdf"></i> Ver comprobante
+					</button>
+				</div>
+
+				<div class="table-responsive">
+					<table class="table table-sm mb-0">
+						<thead class="table-light">
+							<tr>
+								<th>Producto</th>
+								<th>Cantidad</th>
+								<th>Precio</th>
+								<th>Subtotal</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="detalle : ${pedido.detalles}">
+								<td th:text="${detalle.producto.nombre}"></td>
+								<td th:text="${detalle.cantidad}"></td>
+								<td th:text="'S/ ' + ${#numbers.formatDecimal(detalle.precio, 1, 2)}"></td>
+								<td th:text="'S/ ' + ${#numbers.formatDecimal(detalle.precio * detalle.cantidad, 1, 2)}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="~{fragments/footer :: footer}"></div>
+
+	<th:block th:utext="${alert}"></th:block>
+
+</body>
+</html>

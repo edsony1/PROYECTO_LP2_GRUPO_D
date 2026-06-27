@@ -1,6 +1,8 @@
 package com.cibertec.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,4 +22,7 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "idusuario")
     private Usuario usuario;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetallePedido> detalles = new ArrayList<>();
 }

@@ -6,10 +6,8 @@ import com.cibertec.model.Proveedor;
 
 public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
 
-    // Listar proveedores ordenados por ID descendente
     List<Proveedor> findAllByOrderByIdProveedorDesc();
 
-    // Buscar proveedores por razón social
     List<Proveedor> findByRazonSocialContainingIgnoreCase(String razonSocial);
     
     List<Proveedor> findAllByEstadoTrue();

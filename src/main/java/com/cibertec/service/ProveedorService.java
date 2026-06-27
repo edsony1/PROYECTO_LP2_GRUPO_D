@@ -14,17 +14,14 @@ public class ProveedorService {
 
     private final ProveedorRepository proveedorRepository;
 
-    // Listar todos los proveedores ordenados por ID descendente
     public List<Proveedor> getAll() {
         return proveedorRepository.findAllByOrderByIdProveedorDesc();
     }
 
-    // Listar solo proveedores activos
     public List<Proveedor> getAllActive() {
         return proveedorRepository.findAllByEstadoTrue();
     }
 
-    // Registrar proveedor
     public ResultadoResponse create(Proveedor proveedor) {
         try {
             var registro = proveedorRepository.save(proveedor);
@@ -36,12 +33,10 @@ public class ProveedorService {
         }
     }
 
-    // Obtener un proveedor por ID
     public Proveedor getOne(Integer idProveedor) {
         return proveedorRepository.findById(idProveedor).orElseThrow();
     }
 
-    // Actualizar proveedor
     public ResultadoResponse update(Proveedor proveedor) {
         try {
             var registro = proveedorRepository.save(proveedor);
@@ -53,7 +48,6 @@ public class ProveedorService {
         }
     }
 
-    // Eliminar proveedor
     public ResultadoResponse delete(Integer idProveedor) {
         try {
             proveedorRepository.deleteById(idProveedor);
@@ -65,7 +59,6 @@ public class ProveedorService {
         }
     }
 
-    // Cambiar estado (activar/desactivar)
     @Transactional
     public ResultadoResponse changeActive(Integer idProveedor) {
         var proveedor = proveedorRepository.findById(idProveedor)

@@ -13,8 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.cibertec.model.Producto;
 import com.cibertec.model.Rol;
 import com.cibertec.repository.CategoriaRepository;
+import com.cibertec.repository.ProveedorRepository;
 import com.cibertec.service.CategoriaService;
 import com.cibertec.service.ProductoService;
+import com.cibertec.service.ProveedorService;
 import com.cibertec.util.Alert;
 
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +30,8 @@ public class ProductoController {
     private final ProductoService productoService;
     private final CategoriaService categoriaService;
     private final CategoriaRepository categoriaRepository;
+    private final ProveedorRepository proveedorRepository;
+    private final ProveedorService proveedorService;
 
     private String validarAcceso(HttpSession session) {
 
@@ -78,6 +82,7 @@ public class ProductoController {
 
         model.addAttribute("producto", new Producto());
         model.addAttribute("categorias", categoriaService.getAll());
+        model.addAttribute("proveedores", proveedorService.getAllActive());
 
         return "producto-form";
     }
@@ -92,6 +97,7 @@ public class ProductoController {
 
         model.addAttribute("producto", productoService.getOne(idProd));
         model.addAttribute("categorias", categoriaService.getAll());
+        model.addAttribute("proveedores", proveedorService.getAllActive());
 
         return "producto-form";
     }
@@ -100,6 +106,7 @@ public class ProductoController {
     public String guardar(
             @ModelAttribute Producto producto,
             @RequestParam Integer idCategoria,
+            @RequestParam Integer idProveedor,
             HttpSession session,
             RedirectAttributes flash) {
 
@@ -110,6 +117,9 @@ public class ProductoController {
 
         var categoria = categoriaRepository.findById(idCategoria).orElseThrow();
         producto.setCategoria(categoria);
+
+        var proveedor = proveedorRepository.findById(idProveedor).orElseThrow();
+        producto.setProveedor(proveedor);
 
         var esNuevo = producto.getIdProd() == null || producto.getIdProd().isBlank();
 
